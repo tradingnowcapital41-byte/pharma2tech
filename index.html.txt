@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharma2Tech Students Portal</title>
+    <style>
+        :root { --primary: #0056b3; --dark-blue: #003366; --bg: #f0f4f8; --success: #28a745; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: #333; overflow-x: hidden; }
+        
+        .login-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #004a99 0%, #002b5c 100%); padding: 20px; }
+        .card { background: var(--white); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: fadeIn 0.8s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .logo-area { margin-bottom: 30px; }
+        .logo-area h2 { color: var(--dark-blue); margin: 0; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; background: linear-gradient(to right, #0056b3, #002b5c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-area p { color: #666; font-size: 13px; font-weight: 500; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+        .input-group label { font-size: 12px; font-weight: 700; color: #555; margin-left: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; margin-top: 5px; border: 2px solid #edf2f7; border-radius: 12px; box-sizing: border-box; font-size: 15px; transition: all 0.3s; background: #f8fafc; }
+        input:focus { border-color: var(--primary); outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(0,86,179,0.1); }
+
+        .btn-blue { background: linear-gradient(to right, #0056b3, #004494); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 16px; transition: 0.3s; margin-top: 10px; box-shadow: 0 4px 12px rgba(0,86,179,0.3); }
+        .btn-blue:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,86,179,0.4); }
+
+        .login-footer { margin-top: 30px; color: rgba(255,255,255,0.7); font-size: 12px; text-align: center; line-height: 1.6; }
+        .login-footer b { color: #fff; }
+
+        #dashboard { display: none; }
+        .header { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dee2e6; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .header b { color: var(--primary); font-size: 20px; }
+        .nav-tabs { display: flex; overflow-x: auto; gap: 12px; padding: 15px 5%; background: white; border-bottom: 1px solid #ddd; scrollbar-width: none; }
+        .tab-btn { padding: 10px 24px; border: none; background: #f1f3f5; border-radius: 30px; cursor: pointer; white-space: nowrap; font-weight: 600; color: #5f6368; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(0,86,179,0.2); }
+
+        .content { padding: 25px 5%; max-width: 1200px; margin: auto; }
+        .table-box { background: white; border-radius: 15px; overflow-x: auto; box-shadow: 0 8px 25px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: #f8f9fa; color: #444; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; padding: 18px 15px; text-align: left; }
+        td { padding: 18px 15px; border-bottom: 1px solid #f1f3f5; font-size: 14px; color: #555; }
+        
+        .start-btn { background: var(--primary); color: white; padding: 6px 14px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: bold; display: inline-block; }
+        .status-done { color: var(--success); font-weight: bold; }
+        .badge { padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .present { background: #e6f4ea; color: #1e7e34; }
+        .absent { background: #fce8e6; color: #d93025; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="login-page">
+        <div class="card">
+            <div class="logo-area">
+                <h2>Pharma2Tech</h2>
+                <p>Advanced Learning Management System</p>
+            </div>
+            <div class="input-group"><label>Student Email</label><input type="text" id="email" placeholder="Enter your email"></div>
+            <div class="input-group"><label>Password</label><input type="password" id="pass" placeholder="••••••••"></div>
+            <button class="btn-blue" onclick="processLogin()">Secure Sign In</button>
+            <div id="error-msg" style="display:none;"></div>
+        </div>
+        <div class="login-footer">© 2026 <b>Pharma2Tech Systems Pvt. Ltd.</b> Satara<br>All Rights Reserved</div>
+    </div>
+
+    <div id="dashboard">
+        <div class="header"><b id="user-display">Welcome</b><button onclick="location.reload()" style="background:#f8f9fa; color:#d93025; border:1px solid #ddd; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">Sign Out</button></div>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('daily', this)">📅 Daily Tasks</button>
+            <button class="tab-btn" onclick="switchTab('exams', this)">📝 Exams</button>
+            <button class="tab-btn" onclick="switchTab('ints', this)">🤝 Interviews</button>
+            <button class="tab-btn" onclick="switchTab('cert', this)">🏆 Certificate</button>
+        </div>
+        <div class="content">
+            <div id="daily" class="tab-content"><h3>Attendance</h3><div class="table-box"><table><thead><tr><th>Date</th><th>Topic</th><th>Status</th></tr></thead><tbody id="attendance-rows"></tbody></table></div></div>
+            <div id="exams" class="tab-content" style="display:none;"><h3>Exam Records</h3><div class="table-box"><table><thead><tr><th>Subject</th><th>Topic</th><th>Total Q</th><th>Time</th><th>Action</th></tr></thead><tbody id="exam-rows"></tbody></table></div></div>
+            <div id="ints" class="tab-content" style="display:none;"><h3>Interviews</h3><div class="table-box"><table><thead><tr><th>Date</th><th>Type</th><th>Comm.</th><th>Conf.</th><th>Tech.</th><th>Overall</th></tr></thead><tbody id="int-rows"></tbody></table></div></div>
+            <div id="cert" class="tab-content" style="display:none;"><div id="cert-action" style="text-align:center; padding:50px;"></div></div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyctWwwjvLVjmRWfMBho9yHdCcsO2q_88ji8roNvLRb5EeA8dZKrxtWXQ8EiU2cBfmrCg/exec';
+        let currentUserData = null;
+
+        async function processLogin() {
+            const emailInp = document.getElementById('email').value.toLowerCase().trim();
+            const passInp = document.getElementById('pass').value.trim();
+            const errMsg = document.getElementById('error-msg');
+            errMsg.style.display = "block"; errMsg.innerText = "Verifying...";
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?sheet=Users`);
+                const users = await res.json();
+                const found = users.find(u => String(u.email).toLowerCase().trim() === emailInp && String(u.password).trim() === passInp);
+                if (found) {
+                    currentUserData = found;
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    document.getElementById('user-display').innerText = "Hi, " + found.name;
+                    loadStudentData();
+                } else { errMsg.innerText = "Invalid Login!"; }
+            } catch (e) { errMsg.innerText = "Error!"; }
+        }
+
+        async function loadStudentData() {
+            const myEmail = currentUserData.email.toLowerCase().trim();
+            const [att, ex, ints, certs] = await Promise.all([
+                fetch(`${SCRIPT_URL}?sheet=Attendance`).then(r => r.json()),
+                fetch(`${SCRIPT_URL}?sheet=Exams`).then(r => r.json()),
+                fetch(`${SCRIPT_URL}?sheet=Interviews`).then(r => r.json()),
+                fetch(`${SCRIPT_URL}?sheet=Certificates`).then(r => r.json())
+            ]);
+
+            document.getElementById('attendance-rows').innerHTML = att.filter(r => String(r.email).toLowerCase().trim() === myEmail).map(r => 
+                `<tr><td>${r.date}</td><td><b>${r.topic}</b></td><td><span class="badge ${String(r.status).toLowerCase()}">${r.status}</span></td></tr>`
+            ).join('');
+
+            document.getElementById('exam-rows').innerHTML = ex.filter(r => String(r.email).toLowerCase().trim() === myEmail).map(r => {
+                let actionHtml = String(r.status).toLowerCase() === 'pending' 
+                    ? `<a href="${r.exam_link || '#'}" target="_blank" class="start-btn">▶ Start Exam</a>` 
+                    : `<span class="status-done">✅ Completed</span>`;
+                return `<tr><td>${r.subject}</td><td>${r.topic}</td><td>${r.total_q || '-'}</td><td>${r.time || '-'}</td><td>${actionHtml}</td></tr>`;
+            }).join('');
+
+            document.getElementById('int-rows').innerHTML = ints.filter(r => String(r.email).toLowerCase().trim() === myEmail).map(r => {
+                let cleanDate = String(r.date).includes('T') ? r.date.split('T')[0] : r.date;
+                return `<tr><td>${cleanDate}</td><td><b>${r.type}</b></td><td>${r.comm}</td><td>${r.confidence}</td><td>${r.technical}</td><td><b>${r.overall}</b></td></tr>`;
+            }).join('');
+
+            const myCert = certs.find(r => String(r.email).toLowerCase().trim() === myEmail);
+            if(myCert && (myCert.status === "Ready" || myCert.status === "Issued")) {
+                document.getElementById('cert-action').innerHTML = `<h3>Congratulations!</h3><a href="${myCert.download_link}" target="_blank" class="btn-blue" style="padding:15px 30px; text-decoration:none;">Download Certificate</a>`;
+            } else {
+                document.getElementById('cert-action').innerHTML = `<p>Certificate will be available after completion.</p>`;
+            }
+        }
+
+        function switchTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
